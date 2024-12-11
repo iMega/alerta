@@ -2,30 +2,22 @@
 
 This project is designed to create and monitor custom metrics using **Prometheus** and **Grafana**. It includes tools to generate fake data for testing and provides an easy-to-use setup for local development.
 
----
-
 ## Features
 
 1. **Prometheus and Grafana Integration**: Pre-configured setup for Prometheus and Grafana.
 2. **Fake Data Generator**: A Bash script (`faker.sh`) for creating mock metrics data.
 3. **Makefile Commands**: Simplified commands for generating data, running the environment, and stopping services.
 
----
-
 ## Requirements
 
--   **Docker**
--   **Make**
-
----
+-   Docker
+-   Make
 
 ## Installation
 
 1. Clone the repository
 
 2. Ensure Docker and Make are installed on your system.
-
----
 
 ## Usage
 
@@ -90,8 +82,8 @@ Run the following command to start Prometheus and Grafana in Docker containers:
 make dev
 ```
 
--   **Grafana URL**: [http://127.0.0.1:3000](http://127.0.0.1:3000)
--   **Prometheus URL**: [http://127.0.0.1:9090](http://127.0.0.1:9090)
+-   Grafana URL: [http://127.0.0.1:3000](http://127.0.0.1:3000)
+-   Prometheus URL: [http://127.0.0.1:9090](http://127.0.0.1:9090)
 
 ### 4. Stop Services
 
@@ -100,8 +92,6 @@ To stop and remove the running Docker containers, execute:
 ```bash
 make stop
 ```
-
----
 
 ## Files and Directories
 
@@ -115,8 +105,6 @@ make stop
 -   **`make dev`**: Starts Prometheus and Grafana containers.
 -   **`make stop`**: Stops and removes running containers.
 
----
-
 ## Metrics Monitoring
 
 Once the environment is running, you can:
@@ -128,15 +116,13 @@ Once the environment is running, you can:
     - Configure Prometheus as the data source in Grafana.
 2. Use **Prometheus** at [http://127.0.0.1:9090](http://127.0.0.1:9090) to query metrics directly.
 
----
-
 ## Dashboard Provisioning in Grafana
 
 To simplify the setup of Grafana dashboards, you can use **dashboard provisioning** to automatically load preconfigured dashboards when Grafana starts.
 
 ### Steps for Dashboard Provisioning
 
-1. **Save a Dashboard JSON File**
+1. **Save a Dashboard JSON File**.
    Export your dashboard from Grafana as a JSON file and save it in the `grafana/dashboards/` directory.
 
     ```
@@ -144,7 +130,7 @@ To simplify the setup of Grafana dashboards, you can use **dashboard provisionin
     └── example-dashboard.json
     ```
 
-2. **Create a Provisioning Configuration File**
+2. **Create a Provisioning Configuration File**.
    Create a YAML file in the `provisioning/dashboards` directory to define the provisioning settings:
 
     ```yaml
@@ -160,7 +146,7 @@ To simplify the setup of Grafana dashboards, you can use **dashboard provisionin
               path: /etc/grafana/dashboards
     ```
 
-3. **Restart Grafana**
+3. **Restart Grafana**.
    Restart the Grafana container to apply the provisioning settings:
 
     ```bash
@@ -169,54 +155,50 @@ To simplify the setup of Grafana dashboards, you can use **dashboard provisionin
 
 The preloaded dashboards will now appear in Grafana under the specified folder (or the root folder if not specified).
 
----
-
 ## Alerting Provisioning in Grafana
 
 Grafana allows provisioning of alert rules to automate alert setup. These rules can be loaded at startup using a YAML configuration file.
 
 ### Steps for Alerting Provisioning
 
-1. **Define Alerting Rules**
+1. **Define Alerting Rules**.
    Create a YAML file in the `provisioning/alerting/` directory to define alert rules. Example:
 
-```yaml
-apiVersion: 1
+    ```yaml
+    apiVersion: 1
 
-groups:
-    - name: PaymentAlerts
-        interval: 1m
-        rules:
-            - alert: HighErrorRate
-            expr: (sum(rate(payments_failed_total[5m])) / sum(rate(payments_initiated_total[5m]))) > 0.1
-            for: 2m
-            labels:
-                severity: critical
-            annotations:
-                summary: "High payment error rate detected"
-                description: "The error rate for payments has exceeded 10% over the last 5 minutes."
+    groups:
+        - name: PaymentAlerts
+            interval: 1m
+            rules:
+                - alert: HighErrorRate
+                expr: (sum(rate(payments_failed_total[5m])) / sum(rate(payments_initiated_total[5m]))) > 0.1
+                for: 2m
+                labels:
+                    severity: critical
+                annotations:
+                    summary: "High payment error rate detected"
+                    description: "The error rate for payments has exceeded 10% over the last 5 minutes."
 
-            - alert: LowPaymentInitiationRate
-            expr: rate(payments_initiated_total[5m]) < 10
-            for: 5m
-            labels:
-                severity: warning
-            annotations:
-                summary: "Low payment initiation rate"
-                description: "The rate of payment initiations is below 10 per minute."
-```
+                - alert: LowPaymentInitiationRate
+                expr: rate(payments_initiated_total[5m]) < 10
+                for: 5m
+                labels:
+                    severity: warning
+                annotations:
+                    summary: "Low payment initiation rate"
+                    description: "The rate of payment initiations is below 10 per minute."
+    ```
 
-3. **Restart Grafana**
+2. **Restart Grafana**.
    Restart the Grafana container to apply the alerting settings:
 
     ```bash
     make stop dev
     ```
 
-4. **Access Preconfigured Alerts**
+3. **Access Preconfigured Alerts**.
    The preloaded alert rules will now appear in Grafana under the Alerting section.
-
----
 
 ## Troubleshooting
 
@@ -226,8 +208,6 @@ groups:
     ```bash
     chmod +x faker.sh
     ```
-
----
 
 ## License
 
