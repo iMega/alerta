@@ -1,0 +1,24 @@
+services:
+  pm:
+    image: prom/prometheus:v2.38.0
+    ports:
+      - 9090:9090
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --log.level=debug
+      - --storage.tsdb.allow-overlapping-blocks
+      # - --storage.tsdb.retention.time=90d
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - ./prometheus/data:/prometheus/data
+
+  gr:
+    image: grafana/grafana:11.1.9
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_DEFAULT_THEME=system
+    volumes:
+      - ./grafana:/etc/grafana
+    ports:
+      - 3000:3000
