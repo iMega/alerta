@@ -101,9 +101,9 @@ make stop
 
 ### `Makefile`
 
--   **`make gen`**: Runs the `faker.sh` script to generate fake data.
--   **`make dev`**: Starts Prometheus and Grafana containers.
--   **`make stop`**: Stops and removes running containers.
+-   `make gen`: Runs the `faker.sh` script to generate fake data.
+-   `make dev`: Starts Prometheus and Grafana containers.
+-   `make stop`: Stops and removes running containers.
 
 ## Metrics Monitoring
 
